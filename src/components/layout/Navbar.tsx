@@ -11,6 +11,7 @@ const links = [
     { href: "/rooms", label: "Rooms" },
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
+    { href: "/my-bookings", label: "My Bookings" },
 ];
 
 export function Navbar() {
