@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LuxStay - Premium Hotel Booking Application
 
-## Getting Started
+![LuxStay Banner](/public/window.svg)
 
-First, run the development server:
+## Overview
+
+**LuxStay** is a modern, full-stack hotel booking platform built to deliver a seamless and luxurious user experience. Engineered with performance and scalability in mind, it leverages the latest web technologies to provide real-time availability, interactive room details, and instant customer support via an integrated AI-powered chatbot.
+
+## 🚀 Key Features
+
+-   **Modern User Interface**: A fully responsive, high-fidelity design crafted with **Tailwind CSS**.
+-   **Seamless Booking Flow**: Intuitive room selection, detailed amenities view, and a streamlined reservation process.
+-   **Interactive Chatbot**: A floating support widget providing instant assistance to guests.
+-   **Dynamic Routing**: SEO-friendly pages for every room and content section.
+-   **Granular Architecture**: Component-based structure for maintainability and scalability.
+
+## 🛠 Technology Stack
+
+-   **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **Animation**: [TailwindCSS Animate](https://github.com/jamiebuilds/tailwindcss-animate)
+
+## 📂 Project Structure
+
+The project follows a modern, modular architecture within the `src` directory:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├── app/                    # Next.js App Router (Pages & API)
+│   ├── page.tsx            # Landing Page (Hero & Featured Rooms)
+│   ├── layout.tsx          # Root Layout (Navbar, Footer, Global Providers)
+│   ├── rooms/              # Room Listing & Dynamic Detail Pages
+│   │   ├── page.tsx        # /rooms (Grid View)
+│   │   └── [id]/           # /rooms/[id] (Dynamic Room Details)
+│   ├── booking/            # Booking Workflow
+│   │   ├── page.tsx        # Reservation Form (Server Actions)
+│   │   └── success/        # Confirmation Page
+│   ├── about/              # About Us Page
+│   └── contact/            # Contact Page
+│
+├── components/             # Reusable UI Components
+│   ├── layout/             # Application Shell (Navbar, Footer)
+│   ├── ui/                 # Atomic Design Elements (Buttons, Inputs)
+│   └── chatbot/            # Floating Chat Widget Logic
+│
+└── lib/                    # Shared Utilities
+    ├── data.ts             # Mock Database / Data Access Layer
+    ├── types.ts            # TypeScript Interfaces & Models
+    └── utils.ts            # Helper Functions (CN, Class Merging)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏁 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Follow these steps to set up the project locally:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/kapucuonur/hotel-booking-app.git
+    cd hotel-booking-app
+    ```
 
-## Learn More
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4.  **Open your browser**
+    Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤝 Contributing
 
-## Deploy on Vercel
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2024 LuxStay Inc. All rights reserved.
