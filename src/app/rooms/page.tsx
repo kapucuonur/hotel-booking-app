@@ -4,10 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import type { RoomWithHotel } from "@/lib/types";
+import type { RoomDisplay } from "@/lib/types";
 
 export default function RoomsPage() {
-    const [rooms, setRooms] = useState<RoomWithHotel[]>([]);
+    const [rooms, setRooms] = useState<RoomDisplay[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

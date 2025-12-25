@@ -102,3 +102,19 @@ export interface AvailabilityCheckData {
     checkOut: string;
 }
 
+// Frontend display type (maps DB fields to frontend expectations)
+export interface RoomDisplay {
+    id: string;
+    title: string;  // maps to RoomDB.name
+    description: string;
+    type: string;
+    price: number;
+    capacity: number;
+    imageUrl: string;  // maps to RoomDB.image
+    amenities: string[];
+    hotel?: {
+        name: string;
+        city: string;
+        rating: number;
+    };
+}

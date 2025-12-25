@@ -28,9 +28,26 @@ export async function GET(request: NextRequest) {
             },
         });
 
+        // Map database fields to frontend format
+        const mappedRooms = rooms.map(room => ({
+            id: room.id,
+            title: room.name,
+            description: room.description,
+            type: room.type,
+            price: room.price,
+            capacity: room.capacity,
+            imageUrl: room.image,
+            amenities: room.amenities,
+            hotel: {
+                name: room.hotel.name,
+                city: room.hotel.city,
+                rating: room.hotel.rating,
+            },
+        }));
+
         return NextResponse.json({
             success: true,
-            data: rooms,
+            rooms: mappedRooms,
         });
     } catch (error) {
         console.error('Error fetching rooms:', error);
