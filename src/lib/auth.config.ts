@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.email = token.email as string;
                 session.user.name = token.name as string;
                 session.user.image = token.picture as string;
+                session.user.role = token.role as string;
             }
             return session;
         },
@@ -59,6 +60,15 @@ export const authOptions: NextAuthOptions = {
                 token.email = user.email;
                 token.name = user.name;
                 token.picture = user.image;
+
+                // Fetch user role from database
+                if (user.email) {
+                    const dbUser = await prisma.user.findUnique({
+                        where: { email: user.email },
+                        select: { role: true },
+                    });
+                    token.role = dbUser?.role || 'user';
+                }
             }
             return token;
         },
