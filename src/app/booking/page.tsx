@@ -29,8 +29,15 @@ function BookingContent() {
     const [guests, setGuests] = useState(1);
     const [guestFirstName, setGuestFirstName] = useState('');
     const [guestLastName, setGuestLastName] = useState('');
-    const [guestEmail, setGuestEmail] = useState(session?.user?.email || '');
+    const [guestEmail, setGuestEmail] = useState('');
     const [guestPhone, setGuestPhone] = useState('');
+
+    // Set email from session when available
+    useEffect(() => {
+        if (session?.user?.email && !guestEmail) {
+            setGuestEmail(session.user.email);
+        }
+    }, [session, guestEmail]);
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -285,7 +292,12 @@ function BookingContent() {
                                     min="1"
                                     max={room.capacity}
                                     value={guests}
-                                    onChange={(e) => setGuests(parseInt(e.target.value))}
+                                    onChange={(e) => {
+                                        const value = parseInt(e.target.value);
+                                        if (!isNaN(value) && value > 0) {
+                                            setGuests(value);
+                                        }
+                                    }}
                                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                 />
                                 <p className="text-xs text-muted-foreground">Maximum capacity: {room.capacity} guests</p>
