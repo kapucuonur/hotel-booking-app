@@ -85,7 +85,6 @@ function BookingContent() {
                     checkIn,
                     checkOut,
                     guests,
-                    totalAmount: calculateTotal(),
                 }),
             });
 
@@ -95,7 +94,7 @@ function BookingContent() {
                 throw new Error(data.error || 'Failed to create booking');
             }
 
-            setBookingId(data.booking.id);
+            setBookingId(data.data.id);
             setStep('payment');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to create booking');
