@@ -31,12 +31,12 @@ export async function GET(request: NextRequest) {
         // Map database fields to frontend format
         const mappedRooms = rooms.map(room => ({
             id: room.id,
-            title: room.name,
+            title: room.title,
             description: room.description,
             type: room.type,
             price: room.price,
             capacity: room.capacity,
-            imageUrl: room.image,
+            imageUrl: room.imageUrl,
             amenities: room.amenities,
             hotel: {
                 name: room.hotel.name,
@@ -64,13 +64,13 @@ export async function GET(request: NextRequest) {
 // POST /api/rooms - Create a new room (admin only)
 const createRoomSchema = z.object({
     hotelId: z.string(),
-    name: z.string().min(1),
+    title: z.string().min(1),
     description: z.string().min(1),
     type: z.string(),
     price: z.number().positive(),
     capacity: z.number().int().positive(),
     size: z.number().int().positive(),
-    image: z.string().url(),
+    imageUrl: z.string().url(),
     amenities: z.array(z.string()),
 });
 

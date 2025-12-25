@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
             metadata: {
                 bookingId: booking.id,
                 userId: booking.userId,
-                roomName: booking.room.name,
+                roomName: booking.room.title,
             },
             automatic_payment_methods: {
                 enabled: true,
