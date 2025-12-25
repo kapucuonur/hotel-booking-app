@@ -61,13 +61,19 @@ export const authOptions: NextAuthOptions = {
                 token.name = user.name;
                 token.picture = user.image;
 
-                // Fetch user role from database
-                if (user.email) {
-                    const dbUser = await prisma.user.findUnique({
-                        where: { email: user.email },
-                        select: { role: true },
-                    });
-                    token.role = dbUser?.role || 'user';
+                // Fetch user role from database (with fallback)
+                try {
+                    if (user.email) {
+                        const dbUser = await prisma.user.findUnique({
+                            where: { email: user.email },
+                            select: { role: true },
+                        });
+                        token.role = dbUser?.role || 'user';
+                    }
+                } catch (error) {
+                    // Fallback to 'user' if role field doesn't exist yet
+                    console.log('Role field not available yet, defaulting to user');
+                    token.role = 'user';
                 }
             }
             return token;
