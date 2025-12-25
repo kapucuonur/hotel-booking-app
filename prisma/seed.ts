@@ -18,6 +18,41 @@ async function main() {
             country: 'USA',
             rating: 4.8,
             image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2670&auto=format&fit=crop',
+            latitude: 25.7617,
+            longitude: -80.1918,
+            nearestAirport: 'Miami International Airport (MIA)',
+            airportDistance: 12.5,
+            transportationInfo: {
+                taxiFare: '$35-45',
+                publicTransport: ['Metrorail to Downtown', 'Airport Shuttle Service'],
+                uberEstimate: '$25-35'
+            },
+            localInfo: {
+                bestTimeToVisit: 'November to April for pleasant weather and fewer hurricanes',
+                localCustoms: [
+                    'Tipping is customary (15-20% in restaurants)',
+                    'English and Spanish are widely spoken',
+                    'Beach attire is acceptable during the day',
+                ],
+                basicPhrases: [
+                    { phrase: 'Hello', translation: 'Hola' },
+                    { phrase: 'Thank you', translation: 'Gracias' },
+                    { phrase: 'Please', translation: 'Por favor' },
+                    { phrase: 'Excuse me', translation: 'Perdón' },
+                ],
+                safetyTips: [
+                    'Keep valuables in hotel safe',
+                    'Use official taxis or ride-sharing apps',
+                    'Stay in well-lit areas at night',
+                    'Apply sunscreen regularly',
+                ],
+                emergencyContacts: [
+                    { service: 'Emergency Services', number: '911' },
+                    { service: 'Police', number: '911' },
+                    { service: 'Medical Emergency', number: '911' },
+                    { service: 'Hotel Front Desk', number: '+1 (305) 555-0100' },
+                ],
+            },
         },
     });
 

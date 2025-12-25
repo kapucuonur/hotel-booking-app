@@ -56,17 +56,26 @@ model VerificationToken {
 }
 
 model Hotel {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  address     String
-  city        String
-  country     String
-  rating      Float    @default(0)
-  image       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  rooms       Room[]
+  id                 String    @id @default(cuid())
+  name               String
+  description        String
+  address            String
+  city               String
+  country            String
+  rating             Float     @default(0)
+  image              String
+  latitude           Float?
+  longitude          Float?
+  nearestAirport     String?
+  airportDistance    Float? // in kilometers
+  transportationInfo Json? // taxi prices, public transport options
+  localInfo          Json? // travel tips, local customs, emergency contacts
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  rooms              Room[]
+
+  @@index([city])
+  @@index([country])
 }
 
 model Room {
