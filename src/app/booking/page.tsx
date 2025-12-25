@@ -145,10 +145,10 @@ function BookingContent() {
                     <h2 className="text-xl font-semibold mb-4">Reservation Summary</h2>
                     <div className="flex gap-4 mb-4">
                         <div className="h-24 w-24 bg-zinc-200 rounded-md overflow-hidden relative">
-                            <img src={room.imageUrl} alt={room.title} className="object-cover w-full h-full" />
+                            <img src={room.image} alt={room.name} className="object-cover w-full h-full" />
                         </div>
                         <div>
-                            <h3 className="font-semibold">{room.title}</h3>
+                            <h3 className="font-semibold">{room.name}</h3>
                             <p className="text-muted-foreground text-sm">{room.type} Room</p>
                             <p className="text-primary font-bold mt-1">
                                 ${room.price} <span className="text-muted-foreground font-normal text-sm">/ night</span>
