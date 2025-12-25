@@ -70,6 +70,10 @@ const createBookingSchema = z.object({
     checkIn: z.string(),
     checkOut: z.string(),
     guests: z.number().int().positive(),
+    guestFirstName: z.string().min(1, 'First name is required'),
+    guestLastName: z.string().min(1, 'Last name is required'),
+    guestEmail: z.string().email('Invalid email format'),
+    guestPhone: z.string().min(1, 'Phone number is required'),
 });
 
 export async function POST(request: NextRequest) {
@@ -174,6 +178,10 @@ export async function POST(request: NextRequest) {
                 checkOut,
                 guests: validatedData.guests,
                 totalPrice,
+                guestFirstName: validatedData.guestFirstName,
+                guestLastName: validatedData.guestLastName,
+                guestEmail: validatedData.guestEmail,
+                guestPhone: validatedData.guestPhone,
                 status: 'PENDING',
             },
             include: {

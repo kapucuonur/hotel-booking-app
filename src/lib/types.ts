@@ -57,6 +57,10 @@ export interface BookingDB {
     guests: number;
     totalPrice: number;
     status: BookingStatus;
+    guestFirstName?: string | null;
+    guestLastName?: string | null;
+    guestEmail?: string | null;
+    guestPhone?: string | null;
     createdAt: Date;
     updatedAt: Date;
 }

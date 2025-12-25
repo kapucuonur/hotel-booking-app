@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Lock, CreditCard, Shield } from 'lucide-react';
 
 interface PaymentFormProps {
     amount: number;
@@ -71,54 +71,105 @@ export function PaymentForm({ amount, bookingId, onSuccess, onError }: PaymentFo
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <label className="block text-sm font-medium mb-2">
-                    Card Details
-                </label>
-                <div className="p-4 border rounded-md bg-background">
-                    <CardElement
-                        options={{
-                            style: {
-                                base: {
-                                    fontSize: '16px',
-                                    color: '#424770',
-                                    '::placeholder': {
-                                        color: '#aab7c4',
+            {/* Security Badge */}
+            <div className="flex items-center justify-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-lg">
+                <Shield className="h-5 w-5 text-green-600 dark:text-green-500" />
+                <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                    Secure Payment Protected by Stripe
+                </span>
+            </div>
+
+            {/* Card Details Section */}
+            <div className="space-y-3">
+                <div className="flex items-center gap-2 mb-3">
+                    <CreditCard className="h-5 w-5 text-muted-foreground" />
+                    <label className="text-base font-semibold">Card Information</label>
+                </div>
+
+                <div className="relative">
+                    <div className="p-4 border-2 border-input rounded-lg bg-background hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
+                        <CardElement
+                            options={{
+                                style: {
+                                    base: {
+                                        fontSize: '16px',
+                                        color: 'hsl(var(--foreground))',
+                                        fontFamily: 'system-ui, -apple-system, sans-serif',
+                                        '::placeholder': {
+                                            color: 'hsl(var(--muted-foreground))',
+                                        },
+                                        iconColor: 'hsl(var(--primary))',
+                                    },
+                                    invalid: {
+                                        color: 'hsl(var(--destructive))',
+                                        iconColor: 'hsl(var(--destructive))',
+                                    },
+                                    complete: {
+                                        iconColor: 'hsl(var(--primary))',
                                     },
                                 },
-                                invalid: {
-                                    color: '#9e2146',
-                                },
-                            },
-                        }}
-                    />
+                            }}
+                        />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                        <Lock className="h-3 w-3" />
+                        Your card details are encrypted and secure
+                    </p>
                 </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-                <span className="text-sm font-medium">Total Amount</span>
-                <span className="text-2xl font-bold">${amount.toFixed(2)}</span>
+            {/* Payment Summary */}
+            <div className="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/5 border-2 border-primary/20 rounded-xl p-6 space-y-3">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <span>Booking Total</span>
+                    <span>${amount.toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <span>Processing Fee</span>
+                    <span>$0.00</span>
+                </div>
+                <div className="border-t border-primary/20 pt-3 flex items-center justify-between">
+                    <span className="text-lg font-semibold">Total Amount</span>
+                    <span className="text-3xl font-bold text-primary">${amount.toFixed(2)}</span>
+                </div>
             </div>
 
+            {/* Submit Button */}
             <Button
                 type="submit"
                 disabled={!stripe || processing}
-                className="w-full"
+                className="w-full h-12 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                 size="lg"
             >
                 {processing ? (
                     <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Processing Payment...
                     </>
                 ) : (
-                    `Pay $${amount.toFixed(2)}`
+                    <>
+                        <Lock className="mr-2 h-5 w-5" />
+                        Pay ${amount.toFixed(2)} Securely
+                    </>
                 )}
             </Button>
 
-            <p className="text-xs text-muted-foreground text-center">
-                Your payment is secured by Stripe. Test card: 4242 4242 4242 4242
-            </p>
+            {/* Trust Indicators */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                        <Shield className="h-3 w-3" />
+                        <span>SSL Encrypted</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <Lock className="h-3 w-3" />
+                        <span>PCI Compliant</span>
+                    </div>
+                </div>
+                <p className="text-xs text-center text-muted-foreground">
+                    <strong>Test Mode:</strong> Use card 4242 4242 4242 4242 with any future date and CVC
+                </p>
+            </div>
         </form>
     );
 }

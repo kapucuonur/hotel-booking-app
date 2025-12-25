@@ -27,6 +27,10 @@ function BookingContent() {
     const [checkIn, setCheckIn] = useState('');
     const [checkOut, setCheckOut] = useState('');
     const [guests, setGuests] = useState(1);
+    const [guestFirstName, setGuestFirstName] = useState('');
+    const [guestLastName, setGuestLastName] = useState('');
+    const [guestEmail, setGuestEmail] = useState(session?.user?.email || '');
+    const [guestPhone, setGuestPhone] = useState('');
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -85,6 +89,10 @@ function BookingContent() {
                     checkIn,
                     checkOut,
                     guests,
+                    guestFirstName,
+                    guestLastName,
+                    guestEmail,
+                    guestPhone,
                 }),
             });
 
@@ -181,46 +189,107 @@ function BookingContent() {
                 {/* Booking Form or Payment */}
                 {step === 'details' ? (
                     <form onSubmit={handleCreateBooking} className="space-y-6 bg-card border rounded-lg shadow-sm p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <label htmlFor="checkIn" className="text-sm font-medium">Check-in Date</label>
-                                <input
-                                    type="date"
-                                    id="checkIn"
-                                    required
-                                    value={checkIn}
-                                    onChange={(e) => setCheckIn(e.target.value)}
-                                    min={new Date().toISOString().split('T')[0]}
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                />
+                        {/* Guest Information Section */}
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold border-b pb-2">Guest Information</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label htmlFor="firstName" className="text-sm font-medium">First Name *</label>
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        required
+                                        value={guestFirstName}
+                                        onChange={(e) => setGuestFirstName(e.target.value)}
+                                        placeholder="John"
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="lastName" className="text-sm font-medium">Last Name *</label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        required
+                                        value={guestLastName}
+                                        onChange={(e) => setGuestLastName(e.target.value)}
+                                        placeholder="Doe"
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    />
+                                </div>
                             </div>
-                            <div className="space-y-2">
-                                <label htmlFor="checkOut" className="text-sm font-medium">Check-out Date</label>
-                                <input
-                                    type="date"
-                                    id="checkOut"
-                                    required
-                                    value={checkOut}
-                                    onChange={(e) => setCheckOut(e.target.value)}
-                                    min={checkIn || new Date().toISOString().split('T')[0]}
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label htmlFor="email" className="text-sm font-medium">Email Address *</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        required
+                                        value={guestEmail}
+                                        onChange={(e) => setGuestEmail(e.target.value)}
+                                        placeholder="john.doe@example.com"
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="phone" className="text-sm font-medium">Phone Number *</label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        required
+                                        value={guestPhone}
+                                        onChange={(e) => setGuestPhone(e.target.value)}
+                                        placeholder="+1 (555) 123-4567"
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="guests" className="text-sm font-medium">Number of Guests</label>
-                            <input
-                                type="number"
-                                id="guests"
-                                required
-                                min="1"
-                                max={room.capacity}
-                                value={guests}
-                                onChange={(e) => setGuests(parseInt(e.target.value))}
-                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                            />
-                            <p className="text-xs text-muted-foreground">Maximum capacity: {room.capacity} guests</p>
+                        {/* Booking Details Section */}
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold border-b pb-2">Booking Details</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label htmlFor="checkIn" className="text-sm font-medium">Check-in Date *</label>
+                                    <input
+                                        type="date"
+                                        id="checkIn"
+                                        required
+                                        value={checkIn}
+                                        onChange={(e) => setCheckIn(e.target.value)}
+                                        min={new Date().toISOString().split('T')[0]}
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="checkOut" className="text-sm font-medium">Check-out Date *</label>
+                                    <input
+                                        type="date"
+                                        id="checkOut"
+                                        required
+                                        value={checkOut}
+                                        onChange={(e) => setCheckOut(e.target.value)}
+                                        min={checkIn || new Date().toISOString().split('T')[0]}
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label htmlFor="guests" className="text-sm font-medium">Number of Guests *</label>
+                                <input
+                                    type="number"
+                                    id="guests"
+                                    required
+                                    min="1"
+                                    max={room.capacity}
+                                    value={guests}
+                                    onChange={(e) => setGuests(parseInt(e.target.value))}
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                />
+                                <p className="text-xs text-muted-foreground">Maximum capacity: {room.capacity} guests</p>
+                            </div>
                         </div>
 
                         {nights > 0 && (
