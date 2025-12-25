@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { PaymentForm } from '@/components/booking/PaymentForm';
 import { Loader2 } from 'lucide-react';
 import type { RoomDisplay } from '@/lib/types';
 
-export default function BookingPage() {
+function BookingContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { data: session, status } = useSession();
@@ -257,5 +257,17 @@ export default function BookingPage() {
                 )}
             </div>
         </main>
+    );
+}
+
+export default function BookingPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+        }>
+            <BookingContent />
+        </Suspense>
     );
 }
