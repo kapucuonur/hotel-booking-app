@@ -1,5 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { prisma } from '@/lib/db';
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     throw new Error('Google OAuth credentials are not defined in environment variables');
@@ -20,6 +21,29 @@ export const authOptions: NextAuthOptions = {
         signIn: '/auth/signin',
     },
     callbacks: {
+        async signIn({ user, account, profile }) {
+            if (!user.email) return false;
+
+            try {
+                // Create or update user in database
+                await prisma.user.upsert({
+                    where: { email: user.email },
+                    update: {
+                        name: user.name,
+                        image: user.image,
+                    },
+                    create: {
+                        email: user.email,
+                        name: user.name,
+                        image: user.image,
+                    },
+                });
+                return true;
+            } catch (error) {
+                console.error('Error syncing user to database:', error);
+                return false;
+            }
+        },
         async session({ session, token }) {
             if (session.user && token.sub) {
                 session.user.id = token.sub;
