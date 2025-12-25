@@ -34,11 +34,13 @@ export function PaymentForm({ amount, bookingId, onSuccess, onError }: PaymentFo
                 body: JSON.stringify({ bookingId, amount }),
             });
 
-            const { clientSecret, error: apiError } = await response.json();
+            const responseData = await response.json();
 
-            if (apiError) {
-                throw new Error(apiError);
+            if (!response.ok || !responseData.success) {
+                throw new Error(responseData.error || 'Failed to create payment intent');
             }
+
+            const { clientSecret } = responseData.data;
 
             // Confirm payment
             const cardElement = elements.getElement(CardElement);
