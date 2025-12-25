@@ -30,8 +30,8 @@ export default async function RoomDetailPage({ params }: Props) {
                     {/* Image */}
                     <div className="relative h-[400px] lg:h-[600px] rounded-xl overflow-hidden shadow-lg">
                         <Image
-                            src={room.image}
-                            alt={room.name}
+                            src={room.imageUrl}
+                            alt={room.title}
                             fill
                             className="object-cover"
                             priority
@@ -41,7 +41,7 @@ export default async function RoomDetailPage({ params }: Props) {
                     {/* Details */}
                     <div className="flex flex-col gap-6">
                         <div>
-                            <h1 className="text-4xl font-bold mb-2">{room.name}</h1>
+                            <h1 className="text-4xl font-bold mb-2">{room.title}</h1>
                             <span className="text-2xl font-bold text-primary">
                                 ${room.price}<span className="text-base font-normal text-muted-foreground">/night</span>
                             </span>

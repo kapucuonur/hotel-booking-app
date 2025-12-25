@@ -16,7 +16,7 @@ interface Booking {
     status: string;
     room: {
         id: string;
-        name: string;
+        title: string;
         imageUrl: string;
         type: string;
     };
@@ -116,7 +116,7 @@ export default function MyBookingsPage() {
                             <div className="relative h-48 md:h-auto md:w-64">
                                 <img
                                     src={booking.room.imageUrl}
-                                    alt={booking.room.name}
+                                    alt={booking.room.title}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -124,7 +124,7 @@ export default function MyBookingsPage() {
                                 <div>
                                     <div className="flex justify-between items-start mb-2">
                                         <div>
-                                            <h3 className="text-xl font-semibold">{booking.room.name}</h3>
+                                            <h3 className="text-xl font-semibold">{booking.room.title}</h3>
                                             <p className="text-muted-foreground text-sm">
                                                 Confirmation #{booking.id.slice(0, 8).toUpperCase()}
                                             </p>

@@ -72,13 +72,13 @@ model Hotel {
 model Room {
   id          String    @id @default(cuid())
   hotelId     String
-  name        String
+  title       String
   description String
   type        String
   price       Float
   capacity    Int
   size        Int
-  image       String
+  imageUrl    String
   amenities   String[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

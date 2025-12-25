@@ -1,10 +1,10 @@
 export interface Room {
     id: string;
-    name: string;
+    title: string;
     description: string;
     price: number;
     capacity: number;
-    image: string;
+    imageUrl: string;
     amenities: string[];
     type: 'standard' | 'deluxe' | 'suite';
 }
@@ -38,13 +38,13 @@ export interface Hotel {
 export interface RoomDB {
     id: string;
     hotelId: string;
-    name: string;
+    title: string;
     description: string;
     type: string;
     price: number;
     capacity: number;
     size: number;
-    image: string;
+    imageUrl: string;
     amenities: string[];
 }
 
@@ -102,15 +102,15 @@ export interface AvailabilityCheckData {
     checkOut: string;
 }
 
-// Frontend display type (uses actual DB fields)
+// Frontend display type (matches database schema)
 export interface RoomDisplay {
     id: string;
-    name: string;
+    title: string;
     description: string;
     type: string;
     price: number;
     capacity: number;
-    image: string;
+    imageUrl: string;
     amenities: string[];
     hotel?: {
         name: string;
