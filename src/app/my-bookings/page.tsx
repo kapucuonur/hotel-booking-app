@@ -61,10 +61,21 @@ export default function MyBookingsPage() {
                 method: 'DELETE',
             });
 
-            if (!response.ok) throw new Error('Failed to cancel booking');
+            const data = await response.json();
 
-            // Refresh bookings
-            setBookings(bookings.filter(b => b.id !== bookingId));
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to cancel booking');
+            }
+
+            // Update the booking status in the UI instead of removing it
+            setBookings(bookings.map(b =>
+                b.id === bookingId
+                    ? { ...b, status: 'CANCELLED' }
+                    : b
+            ));
+
+            // Show success message
+            alert('Booking cancelled successfully!');
         } catch (err) {
             alert(err instanceof Error ? err.message : 'Failed to cancel booking');
         }
