@@ -12,12 +12,12 @@ interface Booking {
     checkIn: string;
     checkOut: string;
     guests: number;
-    totalAmount: number;
+    totalPrice: number;
     status: string;
     room: {
         id: string;
         name: string;
-        image: string;
+        imageUrl: string;
         type: string;
     };
 }
@@ -40,7 +40,7 @@ export default function MyBookingsPage() {
                 const response = await fetch('/api/bookings');
                 if (!response.ok) throw new Error('Failed to fetch bookings');
                 const data = await response.json();
-                setBookings(data.bookings || []);
+                setBookings(data.data || []);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to load bookings');
             } finally {
@@ -115,7 +115,7 @@ export default function MyBookingsPage() {
                         <div key={booking.id} className="bg-card border rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row">
                             <div className="relative h-48 md:h-auto md:w-64">
                                 <img
-                                    src={booking.room.image}
+                                    src={booking.room.imageUrl}
                                     alt={booking.room.name}
                                     className="w-full h-full object-cover"
                                 />
@@ -130,10 +130,10 @@ export default function MyBookingsPage() {
                                             </p>
                                         </div>
                                         <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${booking.status === 'CONFIRMED'
-                                                ? 'bg-green-500/15 text-green-700 dark:text-green-400'
-                                                : booking.status === 'PENDING'
-                                                    ? 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400'
-                                                    : 'bg-red-500/15 text-red-700 dark:text-red-400'
+                                            ? 'bg-green-500/15 text-green-700 dark:text-green-400'
+                                            : booking.status === 'PENDING'
+                                                ? 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400'
+                                                : 'bg-red-500/15 text-red-700 dark:text-red-400'
                                             }`}>
                                             {booking.status}
                                         </span>
@@ -153,7 +153,7 @@ export default function MyBookingsPage() {
                                         </div>
                                         <div>
                                             <p className="text-muted-foreground">Total</p>
-                                            <p className="font-medium">${booking.totalAmount}</p>
+                                            <p className="font-medium">${booking.totalPrice}</p>
                                         </div>
                                     </div>
                                 </div>
