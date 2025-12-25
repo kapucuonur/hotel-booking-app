@@ -19,12 +19,14 @@ export async function GET(request: NextRequest) {
         const amenitiesArray = amenities ? amenities.split(',') : [];
 
         // Build where clause
-        const where: any = {
-            ...(type && type !== '' && { type }),
-            ...(minPrice && { price: { gte: parseFloat(minPrice) } }),
-            ...(maxPrice && { price: { ...where?.price, lte: parseFloat(maxPrice) } }),
-            ...(capacity && { capacity: { gte: parseInt(capacity) } }),
-        };
+        const where: any = {};
+
+        if (type && type !== '') where.type = type;
+        if (minPrice) where.price = { gte: parseFloat(minPrice) };
+        if (maxPrice) {
+            where.price = { ...where.price, lte: parseFloat(maxPrice) };
+        }
+        if (capacity) where.capacity = { gte: parseInt(capacity) };
 
         // Add amenities filter if provided
         if (amenitiesArray.length > 0) {
