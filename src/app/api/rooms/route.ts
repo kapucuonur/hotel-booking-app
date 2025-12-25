@@ -12,20 +12,46 @@ export async function GET(request: NextRequest) {
         const minPrice = searchParams.get('minPrice');
         const maxPrice = searchParams.get('maxPrice');
         const capacity = searchParams.get('capacity');
+        const amenities = searchParams.get('amenities');
+        const sortBy = searchParams.get('sortBy') || 'price-asc';
+
+        // Parse amenities if provided
+        const amenitiesArray = amenities ? amenities.split(',') : [];
+
+        // Build where clause
+        const where: any = {
+            ...(type && type !== '' && { type }),
+            ...(minPrice && { price: { gte: parseFloat(minPrice) } }),
+            ...(maxPrice && { price: { ...where?.price, lte: parseFloat(maxPrice) } }),
+            ...(capacity && { capacity: { gte: parseInt(capacity) } }),
+        };
+
+        // Add amenities filter if provided
+        if (amenitiesArray.length > 0) {
+            where.amenities = {
+                hasEvery: amenitiesArray,
+            };
+        }
+
+        // Determine sort order
+        let orderBy: any = { price: 'asc' };
+        if (sortBy === 'price-desc') {
+            orderBy = { price: 'desc' };
+        } else if (sortBy === 'rating') {
+            orderBy = { hotel: { rating: 'desc' } };
+        } else if (sortBy === 'capacity') {
+            orderBy = { capacity: 'desc' };
+        }
 
         const rooms = await prisma.room.findMany({
-            where: {
-                ...(type && { type }),
-                ...(minPrice && { price: { gte: parseFloat(minPrice) } }),
-                ...(maxPrice && { price: { lte: parseFloat(maxPrice) } }),
-                ...(capacity && { capacity: { gte: parseInt(capacity) } }),
-            },
+            where,
             include: {
                 hotel: true,
+                _count: {
+                    select: { reviews: true },
+                },
             },
-            orderBy: {
-                price: 'asc',
-            },
+            orderBy,
         });
 
         // Map database fields to frontend format
@@ -36,8 +62,10 @@ export async function GET(request: NextRequest) {
             type: room.type,
             price: room.price,
             capacity: room.capacity,
+            size: room.size,
             imageUrl: room.imageUrl,
             amenities: room.amenities,
+            reviewCount: room._count.reviews,
             hotel: {
                 name: room.hotel.name,
                 city: room.hotel.city,
@@ -48,6 +76,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
             success: true,
             rooms: mappedRooms,
+            total: mappedRooms.length,
         });
     } catch (error) {
         console.error('Error fetching rooms:', error);
@@ -60,6 +89,7 @@ export async function GET(request: NextRequest) {
         );
     }
 }
+
 
 // POST /api/rooms - Create a new room (admin only)
 const createRoomSchema = z.object({
