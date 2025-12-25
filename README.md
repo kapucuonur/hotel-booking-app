@@ -2,6 +2,10 @@
 
 ![LuxStay Banner](https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2670&auto=format&fit=crop)
 
+## 🌐 Live Demo
+
+**[View Live App](https://hotel-booking-app-rho-gilt.vercel.app)** 🚀
+
 ## Overview
 
 **LuxStay** is a modern, full-stack hotel booking platform built to deliver a seamless and luxurious user experience. Engineered with performance and scalability in mind, it leverages the latest web technologies to provide real-time availability, secure payments, user authentication, and instant customer support via an integrated AI-powered chatbot.
