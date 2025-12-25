@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 function SuccessContent() {
     const searchParams = useSearchParams();
     const router = useRouter();

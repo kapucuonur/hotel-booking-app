@@ -9,6 +9,8 @@ import { PaymentForm } from '@/components/booking/PaymentForm';
 import { Loader2 } from 'lucide-react';
 import type { RoomDisplay } from '@/lib/types';
 
+export const dynamic = 'force-dynamic';
+
 function BookingContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
