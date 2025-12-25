@@ -106,13 +106,20 @@ function BookingContent() {
             const data = await response.json();
 
             if (!response.ok) {
+                // Handle specific error cases
+                if (response.status === 409) {
+                    throw new Error('This room is not available for the selected dates. Please choose different dates.');
+                }
                 throw new Error(data.error || 'Failed to create booking');
             }
 
             setBookingId(data.data.id);
             setStep('payment');
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to create booking');
+            const errorMessage = err instanceof Error ? err.message : 'Failed to create booking';
+            setError(errorMessage);
+            // Scroll to top to show error
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } finally {
             setLoading(false);
         }
@@ -124,6 +131,8 @@ function BookingContent() {
 
     const handlePaymentError = (errorMessage: string) => {
         setError(errorMessage);
+        setStep('details'); // Go back to details step on payment error
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     if (status === 'loading' || loading) {
@@ -136,12 +145,31 @@ function BookingContent() {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <p className="text-red-500 mb-4">{error}</p>
-                    <Button onClick={() => router.push('/rooms')}>Back to Rooms</Button>
+            <main className="min-h-screen py-12 bg-zinc-50 dark:bg-zinc-950">
+                <div className="container mx-auto px-4 max-w-2xl">
+                    <div className="bg-destructive/10 border-2 border-destructive rounded-lg p-6 mb-4">
+                        <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 mt-0.5">
+                                <svg className="h-5 w-5 text-destructive" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-sm font-semibold text-destructive mb-1">Booking Error</h3>
+                                <p className="text-sm text-destructive/90">{error}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex gap-3">
+                        <Button onClick={() => { setError(null); router.back(); }} variant="outline">
+                            Go Back
+                        </Button>
+                        <Button onClick={() => setError(null)}>
+                            Try Again
+                        </Button>
+                    </div>
                 </div>
-            </div>
+            </main>
         );
     }
 
