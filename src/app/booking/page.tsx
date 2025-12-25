@@ -44,7 +44,7 @@ function BookingContent() {
                 const response = await fetch(`/api/rooms/${roomId}`);
                 if (!response.ok) throw new Error('Room not found');
                 const data = await response.json();
-                setRoom(data.room);
+                setRoom(data.data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to load room');
             } finally {
