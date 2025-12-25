@@ -1,22 +1,23 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-function SuccessContent() {
-    const searchParams = useSearchParams();
+export default function BookingSuccessPage() {
     const router = useRouter();
-    const bookingId = searchParams.get('bookingId');
-
     const [booking, setBooking] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Get bookingId from URL hash or localStorage as fallback
+        const params = new URLSearchParams(window.location.search);
+        const bookingId = params.get('bookingId') || localStorage.getItem('lastBookingId');
+
         if (!bookingId) {
             router.push('/');
             return;
@@ -27,6 +28,8 @@ function SuccessContent() {
                 const response = await fetch(`/api/bookings/${bookingId}`);
                 const data = await response.json();
                 setBooking(data.booking);
+                // Clear the stored booking ID
+                localStorage.removeItem('lastBookingId');
             } catch (error) {
                 console.error('Failed to fetch booking:', error);
             } finally {
@@ -35,7 +38,7 @@ function SuccessContent() {
         }
 
         fetchBooking();
-    }, [bookingId, router]);
+    }, [router]);
 
     if (loading) {
         return (
@@ -96,17 +99,5 @@ function SuccessContent() {
                 </div>
             </div>
         </main>
-    );
-}
-
-export default function BookingSuccessPage() {
-    return (
-        <Suspense fallback={
-            <main className="min-h-screen flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin" />
-            </main>
-        }>
-            <SuccessContent />
-        </Suspense>
     );
 }
