@@ -24,21 +24,21 @@ export const authOptions: NextAuthOptions = {
         error: '/auth/error',
     },
     callbacks: {
-        async session({ session, user }) {
-            if (session.user) {
-                session.user.id = user.id;
+        async session({ session, token }) {
+            if (session.user && token.sub) {
+                session.user.id = token.sub;
             }
             return session;
         },
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
+                token.sub = user.id;
             }
             return token;
         },
     },
     session: {
-        strategy: 'database',
+        strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     secret: process.env.NEXTAUTH_SECRET,
