@@ -1,10 +1,10 @@
 export interface Room {
     id: string;
-    title: string;
+    name: string;
     description: string;
     price: number;
     capacity: number;
-    imageUrl: string;
+    image: string;
     amenities: string[];
     type: 'standard' | 'deluxe' | 'suite';
 }
