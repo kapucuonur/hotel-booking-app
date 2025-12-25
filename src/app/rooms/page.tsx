@@ -75,15 +75,15 @@ export default function RoomsPage() {
                         <div key={room.id} className="group overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md">
                             <div className="relative h-64 w-full overflow-hidden">
                                 <Image
-                                    src={room.imageUrl}
-                                    alt={room.title}
+                                    src={room.image}
+                                    alt={room.name}
                                     fill
                                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold">{room.title}</h3>
+                                    <h3 className="text-xl font-semibold">{room.name}</h3>
                                     <span className="text-lg font-bold text-primary">
                                         ${room.price}<span className="text-sm font-normal text-muted-foreground">/night</span>
                                     </span>
