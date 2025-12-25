@@ -1,9 +1,71 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { rooms } from "@/lib/data";
+import { useEffect, useState } from "react";
+import type { RoomWithHotel } from "@/lib/types";
 
 export default function RoomsPage() {
+    const [rooms, setRooms] = useState<RoomWithHotel[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function fetchRooms() {
+            try {
+                const response = await fetch('/api/rooms');
+                if (!response.ok) throw new Error('Failed to fetch rooms');
+                const data = await response.json();
+                setRooms(data.rooms || []);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to load rooms');
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchRooms();
+    }, []);
+
+    if (loading) {
+        return (
+            <main className="min-h-screen py-12 bg-zinc-50 dark:bg-zinc-950">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-4xl font-bold tracking-tight mb-8">Our Rooms</h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div key={i} className="animate-pulse">
+                                <div className="bg-gray-300 dark:bg-gray-700 h-64 rounded-t-lg"></div>
+                                <div className="p-6 bg-card rounded-b-lg">
+                                    <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded mb-4"></div>
+                                    <div className="flex gap-2">
+                                        <div className="h-10 bg-gray-300 dark:bg-gray-700 rounded flex-1"></div>
+                                        <div className="h-10 bg-gray-300 dark:bg-gray-700 rounded flex-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </main>
+        );
+    }
+
+    if (error) {
+        return (
+            <main className="min-h-screen py-12 bg-zinc-50 dark:bg-zinc-950">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-4xl font-bold tracking-tight mb-8">Our Rooms</h1>
+                    <div className="text-center py-12">
+                        <p className="text-red-500 mb-4">{error}</p>
+                        <Button onClick={() => window.location.reload()}>Try Again</Button>
+                    </div>
+                </div>
+            </main>
+        );
+    }
+
     return (
         <main className="min-h-screen py-12 bg-zinc-50 dark:bg-zinc-950">
             <div className="container mx-auto px-4">
