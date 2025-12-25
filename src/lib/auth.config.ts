@@ -1,7 +1,5 @@
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from './db';
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     throw new Error('Google OAuth credentials are not defined in environment variables');
@@ -12,7 +10,6 @@ if (!process.env.NEXTAUTH_SECRET) {
 }
 
 export const authOptions: NextAuthOptions = {
-    adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -21,18 +18,23 @@ export const authOptions: NextAuthOptions = {
     ],
     pages: {
         signIn: '/auth/signin',
-        error: '/auth/error',
     },
     callbacks: {
         async session({ session, token }) {
             if (session.user && token.sub) {
                 session.user.id = token.sub;
+                session.user.email = token.email as string;
+                session.user.name = token.name as string;
+                session.user.image = token.picture as string;
             }
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, account }) {
             if (user) {
                 token.sub = user.id;
+                token.email = user.email;
+                token.name = user.name;
+                token.picture = user.image;
             }
             return token;
         },
