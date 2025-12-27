@@ -15,7 +15,7 @@ export default function SignInPage() {
 
                 <div className="space-y-4">
                     <Button
-                        onClick={() => signIn('google', { callbackUrl: '/booking' })}
+                        onClick={() => signIn('google', { callbackUrl: '/' })}
                         className="w-full flex items-center justify-center gap-3 bg-white text-gray-900 border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 py-6 text-base font-medium"
                     >
                         <Chrome className="w-5 h-5" />
