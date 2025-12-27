@@ -23,43 +23,16 @@ export const authOptions: NextAuthOptions = {
         signIn: '/auth/signin',
     },
     callbacks: {
-        async session({ session, token }) {
-            if (session.user && token.sub) {
-                session.user.id = token.sub;
-                session.user.email = token.email as string;
-                session.user.name = token.name as string;
-                session.user.image = token.picture as string;
-                session.user.role = token.role as string;
+        async session({ session, user }) {
+            if (session.user) {
+                session.user.id = user.id;
+                session.user.role = (user as any).role || 'user';
             }
             return session;
         },
-        async jwt({ token, user, account }) {
-            if (user) {
-                token.sub = user.id;
-                token.email = user.email;
-                token.name = user.name;
-                token.picture = user.image;
-
-                // Fetch user role from database (with fallback)
-                try {
-                    if (user.email) {
-                        const dbUser = await prisma.user.findUnique({
-                            where: { email: user.email },
-                            select: { role: true },
-                        });
-                        token.role = dbUser?.role || 'user';
-                    }
-                } catch (error) {
-                    // Fallback to 'user' if role field doesn't exist yet
-                    console.log('Role field not available yet, defaulting to user');
-                    token.role = 'user';
-                }
-            }
-            return token;
-        },
     },
     session: {
-        strategy: 'jwt',
+        strategy: 'database',
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     secret: process.env.NEXTAUTH_SECRET,
