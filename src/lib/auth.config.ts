@@ -1,5 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/lib/db';
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
@@ -11,6 +12,7 @@ if (!process.env.NEXTAUTH_SECRET) {
 }
 
 export const authOptions: NextAuthOptions = {
+    adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -21,29 +23,6 @@ export const authOptions: NextAuthOptions = {
         signIn: '/auth/signin',
     },
     callbacks: {
-        async signIn({ user, account, profile }) {
-            if (!user.email) return false;
-
-            try {
-                // Create or update user in database
-                await prisma.user.upsert({
-                    where: { email: user.email },
-                    update: {
-                        name: user.name,
-                        image: user.image,
-                    },
-                    create: {
-                        email: user.email,
-                        name: user.name,
-                        image: user.image,
-                    },
-                });
-                return true;
-            } catch (error) {
-                console.error('Error syncing user to database:', error);
-                return false;
-            }
-        },
         async session({ session, token }) {
             if (session.user && token.sub) {
                 session.user.id = token.sub;
