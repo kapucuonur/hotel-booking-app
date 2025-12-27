@@ -64,4 +64,5 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     useSecureCookies: process.env.NODE_ENV === 'production',
-};
+    trustHost: true,
+} as NextAuthOptions;
