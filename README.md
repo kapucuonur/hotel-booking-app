@@ -17,6 +17,9 @@
 - **Secure Authentication**: Google OAuth integration via **NextAuth.js** for secure user authentication.
 - **Real-time Availability**: Database-backed room availability checking with conflict detection.
 - **Stripe Payment Integration**: Secure payment processing with **Stripe** and webhook support.
+- **Admin Dashboard**: Comprehensive admin panel for managing bookings, rooms, and users with role-based access control.
+- **Review & Rating System**: Users can leave reviews with ratings, photos, and helpful voting.
+- **Advanced Search & Filters**: Filter rooms by price, capacity, amenities, and sort by various criteria.
 - **Interactive Chatbot**: A floating support widget providing instant assistance to guests.
 - **Dynamic Routing**: SEO-friendly pages for every room and content section.
 - **Database Persistence**: All bookings, payments, and user data stored in **PostgreSQL** via **Supabase**.
@@ -52,17 +55,30 @@ src/
 │   │   ├── bookings/       # Booking management
 │   │   ├── payments/       # Stripe payment processing
 │   │   ├── availability/   # Room availability checking
+│   │   ├── reviews/        # Review & rating management
 │   │   └── user/           # User profile management
 │   ├── rooms/              # Room Listing & Dynamic Detail Pages
-│   │   ├── page.tsx        # /rooms (Grid View)
+│   │   ├── page.tsx        # /rooms (Grid View with Filters)
 │   │   └── [id]/           # /rooms/[id] (Dynamic Room Details)
 │   ├── booking/            # Booking Workflow
 │   │   ├── page.tsx        # Reservation Form (Server Actions)
 │   │   └── success/        # Confirmation Page
+│   ├── my-bookings/        # User's Booking History
+│   ├── admin/              # Admin Dashboard (Protected)
+│   │   ├── page.tsx        # Dashboard Overview
+│   │   ├── bookings/       # Booking Management
+│   │   ├── rooms/          # Room Management
+│   │   ├── users/          # User Management
+│   │   └── reviews/        # Review Moderation
 │   ├── auth/               # Authentication Pages
 │   │   └── signin/         # Sign In Page
 │   ├── about/              # About Us Page
-│   └── contact/            # Contact Page
+│   ├── contact/            # Contact Page
+│   ├── faq/                # FAQ Page
+│   ├── privacy/            # Privacy Policy
+│   ├── terms/              # Terms of Service
+│   ├── cookies/            # Cookie Policy
+│   └── cancellation/       # Cancellation Policy
 │
 ├── components/             # Reusable UI Components
 │   ├── layout/             # Application Shell (Navbar, Footer)
