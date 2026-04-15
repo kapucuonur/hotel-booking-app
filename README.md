@@ -22,7 +22,7 @@
 - **Advanced Search & Filters**: Filter rooms by price, capacity, amenities, and sort by various criteria.
 - **Interactive Chatbot**: A floating support widget providing instant assistance to guests.
 - **Dynamic Routing**: SEO-friendly pages for every room and content section.
-- **Database Persistence**: All bookings, payments, and user data stored in **PostgreSQL** via **Supabase**.
+- **Database Persistence**: All bookings, payments, and user data stored in **PostgreSQL**.
 
 ## 🛠 Technology Stack
 
@@ -34,7 +34,7 @@
 - **Animation**: [Framer Motion](https://www.framer.com/motion/)
 
 ### Backend
-- **Database**: [PostgreSQL](https://www.postgresql.org/) (via [Supabase](https://supabase.com/))
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/) with Google OAuth
 - **Payments**: [Stripe](https://stripe.com/)
@@ -107,7 +107,6 @@ Before you begin, ensure you have the following:
 
 1. **Node.js** (v18 or higher)
 2. **npm** or **yarn**
-3. **Supabase Account** - [Create one here](https://supabase.com/)
 4. **Stripe Account** - [Create one here](https://stripe.com/)
 5. **Google Cloud Console** - For OAuth credentials
 
@@ -129,7 +128,7 @@ npm install
 Create a `.env.local` file in the root directory and add your environment variables:
 
 ```bash
-# Database (Supabase PostgreSQL)
+# Database (PostgreSQL)
 DATABASE_URL="postgresql://user:password@host:port/database?schema=public"
 
 # NextAuth.js
@@ -140,11 +139,6 @@ NEXTAUTH_SECRET="your-secret-key-here-generate-with-openssl-rand-base64-32"
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
-SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
-
 # Stripe
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
 STRIPE_SECRET_KEY="sk_test_..."
@@ -152,13 +146,6 @@ STRIPE_WEBHOOK_SECRET="whsec_..."
 ```
 
 #### Getting Your Credentials
-
-**Supabase:**
-1. Create a project at [supabase.com](https://supabase.com/)
-2. Go to Project Settings → Database
-3. Copy the connection string for `DATABASE_URL`
-4. Go to Project Settings → API
-5. Copy the URL and anon key
 
 **Google OAuth:**
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
@@ -217,6 +204,38 @@ Navigate to [http://localhost:3000](http://localhost:3000) to view the applicati
   ```bash
   npm run db:seed
   ```
+
+## 🌍 Self-Hosting (Docker & Raspberry Pi)
+
+LuxStay can be easily self-hosted on a server or a Raspberry Pi using Docker Compose and Cloudflare Tunnels for secure exposure to the public internet without opening router ports.
+
+### 1. Docker Compose Setup
+
+First, ensure you have both a `Dockerfile` and `docker-compose.yml` configured. The `docker-compose.yml` spins up:
+- The **Next.js Application** on port `3000`.
+- A **PostgreSQL Database** on port `5432` with a persistent volume (`pgdata`).
+
+Start the environment:
+```bash
+docker compose up -d --build
+```
+
+### 2. Database Restoration (Optional)
+
+If migrating from an external provider (like Neon.tech), you can restore your `.sql` dump into the fresh Docker database:
+```bash
+cat /tmp/hotel_backup.sql | docker compose exec -T db psql -U pi -d hoteldb
+```
+
+### 3. Exposing via Cloudflare Tunnels
+
+To securely access your application via a custom domain (e.g., `hotel.trihonor.com`):
+1. Navigate to your **Cloudflare Zero Trust** dashboard.
+2. Go to **Networks > Tunnels** and configure your tunnel.
+3. Under **Public Hostname**, map your domain to your local port:
+   - **Type**: `HTTP`
+   - **URL**: `127.0.0.1:3000`
+4. Ensure your `.env` file contains `NEXTAUTH_URL=https://hotel.trihonor.com` so Google Auth redirects properly.
 
 ## 🔐 Authentication Flow
 
