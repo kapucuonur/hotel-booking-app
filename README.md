@@ -4,7 +4,7 @@
 
 ## 🌐 Live Demo
 
-**[View Live App](https://hotel-booking-app-rho-gilt.vercel.app)** 🚀
+**[View Live App](https://hotel.trihonor.com)** 🚀
 
 ## Overview
 
